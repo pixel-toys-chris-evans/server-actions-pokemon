@@ -1,5 +1,3 @@
-import Image from "next/image";
-import { fetchPokemon } from "./server";
 import { Suspense } from "react";
 import { PokemonList } from "./components/pokemon-list.component";
 
