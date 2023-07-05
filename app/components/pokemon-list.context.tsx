@@ -25,13 +25,18 @@ const INITIAL_VALUE: PokemonStore = {
 const PokemonContext = createContext(INITIAL_VALUE);
 
 type PokemonProviderProps = {
-  initial: PokemonReference[];
+  pokemon: PokemonReference[];
+  next?: string;
   children?: ReactNode;
 };
 
-export function PokemonProvider({ initial, children }: PokemonProviderProps) {
-  const [pokemon, setPokemon] = useState<PokemonReference[]>(initial);
-  const [next, setUrl] = useState<string | undefined>(undefined);
+export function PokemonProvider({
+  pokemon: initialPokemon,
+  next: initialNext,
+  children,
+}: PokemonProviderProps) {
+  const [pokemon, setPokemon] = useState<PokemonReference[]>(initialPokemon);
+  const [next, setUrl] = useState<string | undefined>(initialNext);
 
   return (
     <PokemonContext.Provider value={{ pokemon, setPokemon, next, setUrl }}>
