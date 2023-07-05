@@ -1,38 +1,24 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { loadPokemon } from "../actions";
+import { PokemonLoader } from "./pokemon-loader.component";
+import { usePokemonStore } from "./pokemon-list.context";
 
-export async function PokemonList() {
-  const [isLoading, startTransition] = useTransition();
-
-  const [pokemon, setPokemon] = useState<JSX.Element[]>([]);
-  const [nextUrl, setUrl] = useState<string | undefined>(undefined);
-
-  function onLoadMore() {
-    if (!isLoading) {
-      startTransition(async () => {
-        const { next, html } = await loadPokemon(nextUrl);
-
-        setPokemon((state) => [...state, html]);
-        setUrl(next);
-      });
-    }
-  }
-
-  const buttonText = isLoading ? "Loading..." : "Load More";
+export function PokemonList() {
+  const { pokemon } = usePokemonStore();
 
   return (
     <>
-      <ul>{pokemon}</ul>
-      <button
-        type="button"
-        onClick={() => {
-          onLoadMore();
-        }}
-      >
-        {buttonText}{" "}
-      </button>
+      <ul className="m-8 p-0 flex flex-col gap-2 w-96">
+        {pokemon.map((pokemon) => (
+          <li
+            key={pokemon.name}
+            className="py-2 px-4 flex flex-row gap-4 items-center bg-white border-slate-200 border-[1px] rounded-lg capitalize text-lg shadow-md"
+          >
+            {pokemon.name}
+          </li>
+        ))}
+      </ul>
+      <PokemonLoader />
     </>
   );
 }
